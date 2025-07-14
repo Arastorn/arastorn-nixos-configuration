@@ -1,35 +1,54 @@
-# nixos-vps-configuration
+# arastorn-nixos-configuration
 
 ## Description
 
-This repo is to store and make it easy to start a vps from start.
+This repo is to store and make it easy to start my multimachines configuration from start.
 
-The goal of this configuration is to run two services within nixos and using flake.
+The goal of this configuration is to run two services all services within nixos and using flake.
 
-- Nginx proxy manager
+- Caddy
 - Wireguard
 
 Giving the possibility to connect to homeserver and forward all application without exposing home server ports.
 
 And giving all the applications specific host naming through nginx proxy manager which will also manage certificate.
 
-
 ## Installation
 
  From a fresh install of nixos clone the repo on your user.
 
- run theses commands to free /etc/nixos and symlink this configuration in that place.
+ Then get your pub key from the new root user and add it to the list on secrets/secrets.nix usually from 
 
  ```bash
-    sudo ln -s ~/nixos-vps-configuration /etc/nixos
+    ssh-keygen -t ed25519
  ```
 
- Add your environment file in this place :
+ from there back to a computer that have already a private key access to the encrypted secrets and run this command to reencrypt all secret making them available for it.
 
- Follow env.exemple to know which value to add.
+ ```bash
+    agenix --rekey
+ ```
 
- Ready to update configuration running
+Then pull changes on git from the new machine and run the next command to start the machine configuration.
+
+ ### VPS
 
  ```bash
    sudo nixos-rebuild switch --flake .#evangelyne
  ```
+
+### Home Server
+
+ ```bash
+   sudo nixos-rebuild switch --flake .#tristepin
+ ```
+
+ ## Editor config
+
+By default the os will be setup to open vscode
+
+In case you need to use vim use this command to force vim instead.
+
+```bash
+export EDITOR=vim
+```
