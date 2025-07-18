@@ -43,6 +43,20 @@ Then pull changes on git from the new machine and run the next command to start 
    sudo nixos-rebuild switch --flake .#tristepin
  ```
 
+ #### Prepare disk for Mergerfs - Snapraid 
+
+ ```bash
+  # run this command to get drives informations
+  lsblk -o NAME,SIZE,TYPE,MOUNTPOINT,LABEL,UUID
+  # format parity and data drives
+  sudo mkfs.ext4 -L data(x) /dev/sda(x)
+  sudo mkfs.ext4 -L parity(x) /dev/sdb(x)
+  # run this command again
+  lsblk -o NAME,SIZE,TYPE,MOUNTPOINT,LABEL,UUID
+ ```
+
+Update ./modules/mergerfs-snapraid.nix file to match UUID for each disk from new system.
+
  ## Editor config
 
 By default the os will be setup to open vscode
@@ -51,4 +65,21 @@ In case you need to use vim use this command to force vim instead.
 
 ```bash
 export EDITOR=vim
+```
+
+## Back up lost HDD
+
+add a new disk with the size lost and format it to ext4
+
+```bash
+sudo mkfs.ext4 -L data(x) /dev/sda(x)
+lsblk -o NAME,SIZE,TYPE,MOUNTPOINT,LABEL,UUID
+```
+
+Put the new idea to mount and replace the old one on same place from ./modules/mergerfs-snapraid.nix
+
+Then run command 
+
+```bash
+snapraid -c /etc/snapraid.conf fix
 ```

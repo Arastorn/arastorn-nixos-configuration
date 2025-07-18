@@ -16,6 +16,8 @@
       root-password.file = ../../secrets/passwords/root.age;
     };
   };
+
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
   
   system.stateVersion = "25.05";
   boot.loader.systemd-boot.enable = true;
