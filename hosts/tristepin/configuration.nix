@@ -36,6 +36,7 @@
     git 
     curl
     agenix.packages."${system}".default
+    tcpdump
   ];
 
   # Enable Remote vscode
